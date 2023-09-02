@@ -42,16 +42,20 @@ export def SaveSession(_sessName = "")
     endif
     g:LightSessionsCurrSession = sessName
 
-    exec "mksession! " g:LightSessionsDir .. "/" .. sessName .. ".vim"
+    exec "mksession!" g:LightSessionsDir .. "/" .. sessName .. ".vim"
 
-    echo "Saved session \"" sessName "\""
+    echo "Saved session \"" .. sessName .. "\""
 enddef
 
 export def LoadSession(sessName: string)
+    var file = g:LightSessionsDir .. "/" .. sessName .. ".vim"
+    if !filereadable(file)
+        echoerr "File doesn't exist: " .. file
+        return
+    endif
     g:LightSessionsCurrSession = sessName
-    # TODO: check for existence before running source
-    exec "source " g:LightSessionsDir .. "/" .. sessName .. ".vim"
-    echo "Loaded session" sessName
+    exec "source" file
+    echo "Loaded session \"" .. sessName .. "\""
 enddef
 
 export def AutoSaveCurrSess()
