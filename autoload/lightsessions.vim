@@ -1,0 +1,61 @@
+vim9script
+
+def SetupVariables()
+    if !exists("g:LightSessionsDir")
+        g:LightSessionsDir = $HOME .. (has("win32") ? "/vimfiles" : "/.vim") .. "/sessions"
+    endif
+    if !exists("g:LightSessionsCurrSession")
+        g:LightSessionsCurrSession = ""
+    endif
+    if !exists("g:LightSessionsCaseInsensitive")
+        g:LightSessionsCaseInsensitive = 1
+    endif
+    if !exists("g:LightSessionsAutoSave")
+        g:LightSessionsAutoSave = 1
+    endif
+
+    if !isdirectory(g:LightSessionsDir)
+        mkdir(g:LightSessionsDir)
+    endif
+enddef
+SetupVariables()
+
+export def ListSessions(): list<string>
+    if isdirectory(g:LightSessionsDir)
+        var sessions = glob(g:LightSessionsDir .. "/*.vim", 0, 1)
+            ->filter("!isdirectory(v:val)")
+            ->map('fnamemodify(v:val, ":t:r")')
+
+        return sessions
+    else
+        return []
+    endif
+enddef
+
+export def SaveSession(_sessName = "")
+    var sessName = _sessName
+    if (sessName == "" && g:LightSessionsCurrSession != "")
+        sessName = g:LightSessionsCurrSession
+    elseif (sessName == "")
+        echoerr "Session name required: no existing session exists to infer the name from"
+        return
+    endif
+    g:LightSessionsCurrSession = sessName
+
+    exec "mksession! " g:LightSessionsDir .. "/" .. sessName .. ".vim"
+
+    echo "Saved session \"" sessName "\""
+enddef
+
+export def LoadSession(sessName: string)
+    g:LightSessionsCurrSession = sessName
+    # TODO: check for existence before running source
+    exec "source " g:LightSessionsDir .. "/" .. sessName .. ".vim"
+    echo "Loaded session" sessName
+enddef
+
+export def AutoSaveCurrSess()
+    if g:LightSessionsCurrSession != "" && g:LightSessionsAutoSave == 1
+        SaveSession()
+    endif
+enddef

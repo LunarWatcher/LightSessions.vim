@@ -1,0 +1,102 @@
+*lightsessions* *lightsessions.vim* *lightsessions.txt*
+
+License: MIT
+URL: https://github.com/LunarWatcher/LightSessions.vim
+
+================================================================================
+Table of contents~
+
+    1. Introduction ............................... |lightsessions-introduction|
+    2. Commands ................................... |lightsessions-commands|
+    3. Options .................................... |lightsessions-options|
+    4. Features ................................... |lightsessions-features|
+        1. Auto-saving ............................ |lightsessions-autosave|
+
+================================================================================
+1. Introduction                                       *lightsessions-introduction*
+
+LightSessions is a minimal Vim9 session manager. Its main features are wrapping
+`mksession` with autocomplete, to store sessions in a different directory, and
+auto-saving the current session on exit.
+
+The primary goals of this plugin are:
+1. Minimalism: a minimum set of features are supported, based on my personal
+   preferences.
+2. Unintrusiveness: aside saving the initial session, it shouldn't be necessary
+   to manually save the session again
+3. No excessive writes: while risking losing session changes on an abnormal
+   exit, there's no runtime cost to performance, and the impact of losing some
+   session data is minimal at worst. 
+4. Flexibility: as usual, if it can be configured, it has an option. If you
+   don't like auto-saving, turn it off. Don't like the default directory? Change
+   it. 
+   For anything using built-in functionality (such as the internal calls to
+   mksession), the default built-in options are used (|'sessionoptions'|), and
+   not overridden.
+
+Also note that this plugin is generally considered feature complete. Additional
+features may be added in the future if needed, but the plugin is intentionally
+not exhaustive. If you want exhaustive, use a different session manager.
+
+================================================================================
+2. Commands                                               *lightsessions-commands*
+*:SaveSession* <name?>
+    Saves a session given a provided name. If no name is supplied,
+    |g:LightSessionsCurrSession| is used. By default, this variable is only set
+    if |:LoadSession| has been invoked. If |g:LightSessionsCurrSession| is
+    empty, the command prints an error and fails.
+
+*:LoadSession* <name>
+    Loads a session by the given name. Errors if no such session can be found
+
+================================================================================
+3. Options                                                 *lightsessions-options*
+*g:LightSessionsDir* - default: ~/.vim/sessions on UNIX, ~/vimfiles/sessions on Windows
+    (note: ~ is expanded from |$HOME|)
+
+    The directory to store sessions in. To work optimally, this should be an
+    absolute path. It _can_ be relative, but that would defeat the entire
+    purpose of having a central directory for sessions.
+
+    If you plan to switch to/from a different session manager, this is where you
+    copy the session files from/to if you want to keep old sessions. Note  that
+    this assumes the other manager also uses |:mksession| under the hood, as
+    other types of files may require other loading systems that this (or the
+    other) plugin doesn't support
+
+*g:LightSessionsCurrSession*
+    The name of the current session. Defaults to a blank string when unset. Used
+    when a session name is needed, but not supplied directly. Examples include
+    inferring the current name to auto-save the session as when Vim is exited.
+
+*g:LightSessionsCaseInsensitive* - default: 1, type: bool
+    Whether or not auto-completion for the commands is performed
+    case-insensitively. 
+
+*g:LightSessionsAutoSave* - default: 1, type: bool
+    Whether or not to automatically save the current session on exit. Note that
+    this only applies of |g:LightSessionsCurrSession| is set. See
+    |lightsessions-autosave|
+
+================================================================================
+4. Features                                               *lightsessions-features*
+
+--------------------------------------------------------------------------------
+4.1. Auto-saving                                          *lightsessions-autosave*
+
+LightSessions auto-saves the current session if possible when Vim is exited. The
+session is not saved at any other time, to reduce performance impact, and
+because there's little to nothing to gain from regularly auto-saving the
+session.
+
+Auto-saving relies on |g:LightSessionsCurrSession| being set. By default, it's
+set when |:SaveSession| or |:LoadSession| is executed.
+
+Third party applications can have other ways of setting
+|g:LightSessionsCurrSession| to enable more complex auto-saving behaviour.
+However, this is not bundled in the plugin because it isn't a desired feature.
+
+If continuous session saving is something you're  interested in, use
+https://github.com/tpope/vim-obsession instead.
+
+vim:ft=help:tw=80
