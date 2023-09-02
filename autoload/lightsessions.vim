@@ -63,3 +63,11 @@ export def AutoSaveCurrSess()
         SaveSession()
     endif
 enddef
+
+export def StartifyList(): list<any>
+    var sessions = ListSessions()
+
+    return sessions->mapnew((_, v) => {
+        return {"line": v, "cmd": ":LoadSession " .. v}
+    })
+enddef

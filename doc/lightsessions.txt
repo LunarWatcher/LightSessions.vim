@@ -11,6 +11,7 @@ Table of contents~
     3. Options .................................... |lightsessions-options|
     4. Features ................................... |lightsessions-features|
         1. Auto-saving ............................ |lightsessions-autosave|
+        2. Starify integration .................... |lightsessions-startify|
 
 ================================================================================
 1. Introduction                                       *lightsessions-introduction*
@@ -98,5 +99,20 @@ However, this is not bundled in the plugin because it isn't a desired feature.
 
 If continuous session saving is something you're  interested in, use
 https://github.com/tpope/vim-obsession instead.
+
+--------------------------------------------------------------------------------
+4.2. Startify integration                                 *lightsessions-startify*
+
+The plugin provides a function for startify integration. Example use: >
+    let g:startify_lists = [
+        \ { 'type': function('lightsessions#ListSessions'),  'header': ['    Sessions'] },
+        \ ]
+<
+This is a simple wrapper function around the ListSessions() function, but with a
+conversion to convert the list to a valid list for Startify. When clicked (or
+otherwise invoked), Startify is instructed to execute |:LoadSession| <name>,
+which also makes all the auto-save functionality work (if turned on with
+|g:LightSessionsAutoSave|), and regardless, makes save name inferrence work with
+manual saves.
 
 vim:ft=help:tw=80
