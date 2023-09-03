@@ -43,8 +43,6 @@ export def SaveSession(_sessName = "")
     g:LightSessionsCurrSession = sessName
 
     exec "mksession!" g:LightSessionsDir .. "/" .. sessName .. ".vim"
-
-    echo "Saved session \"" .. sessName .. "\""
 enddef
 
 export def LoadSession(sessName: string)
@@ -55,7 +53,6 @@ export def LoadSession(sessName: string)
     endif
     g:LightSessionsCurrSession = sessName
     exec "source" file
-    echo "Loaded session \"" .. sessName .. "\""
 enddef
 
 export def AutoSaveCurrSess()
