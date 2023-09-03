@@ -37,7 +37,6 @@ def FilterSessionsPredicate(item: string, ArgLead: string): bool
 enddef
 
 def CompleteSessions(ArgLead: string, CmdLine: any, CursorPos: any): list<string>
-    echo lsa.ListSessions()
     return lsa.ListSessions()
         ->filter((_, item) => FilterSessionsPredicate(item, ArgLead))
         ->sort((a, b) => SortByStridx(a, b, ArgLead))
