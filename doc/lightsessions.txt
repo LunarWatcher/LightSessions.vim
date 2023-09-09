@@ -1,4 +1,5 @@
-*lightsessions* *lightsessions.vim* *lightsessions.txt*
+*lightsessions*                             Light-weight, minimal session manager
+*lightsessions.vim* *lightsessions.txt*
 
 License: MIT
 URL: https://github.com/LunarWatcher/LightSessions.vim
