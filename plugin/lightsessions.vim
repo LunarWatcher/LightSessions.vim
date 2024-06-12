@@ -42,10 +42,10 @@ def CompleteSessions(ArgLead: string, CmdLine: any, CursorPos: any): list<string
         ->sort((a, b) => SortByStridx(a, b, ArgLead))
 enddef
 
-command! -complete=customlist,<SID>CompleteSessions -nargs=? SaveSession :call <ScriptCmd>lsa.SaveSession(<f-args>)
-command! -complete=customlist,<SID>CompleteSessions -nargs=1 LoadSession :call <ScriptCmd>lsa.LoadSession(<f-args>)
+command! -complete=customlist,<SID>CompleteSessions -nargs=? SaveSession :call <SID>lsa.SaveSession(<f-args>)
+command! -complete=customlist,<SID>CompleteSessions -nargs=1 LoadSession :call <SID>lsa.LoadSession(<f-args>)
 
 augroup LightSessions
     au!
-    autocmd VimLeavePre * call <ScriptCmd>lsa.AutoSaveCurrSess()
+    autocmd VimLeavePre * call <SID>lsa.AutoSaveCurrSess()
 augroup END
