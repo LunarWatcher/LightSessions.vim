@@ -1,13 +1,6 @@
 vim9script
 
-if exists("g:LightSessionsLoaded")
-    finish
-endif
-g:LightSessionsLoaded = 1
-
 import autoload "lightsessions.vim" as lsa
-
-#echom lsa.ListSessions()
 
 def SortByStridx(a: string, b: string, search: string): number
     var aidx = a->stridx(search)
